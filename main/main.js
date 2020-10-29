@@ -10,11 +10,11 @@ module.exports = function main(inputs) {
     Receipt.prototype = {
         constructor: Receipt,
         ToOutput: function () {
-            let multiple = "";
+            let unitString = "";
             if (this.Quantity > 1) {
-                multiple = " " + this.Unit + "s";
+                unitString = " " + this.Unit + "s";
             }
-            let outString = "Name: " + this.Name + ", Quantity: " + this.Quantity + multiple + ", Unit price: " + this.Price.toFixed(2) + " (yuan), Subtotal: " + (this.Price * this.Quantity).toFixed(2) + " (yuan)\n";
+            let outString = "Name: " + this.Name + ", Quantity: " + this.Quantity + unitString + ", Unit price: " + this.Price.toFixed(2) + " (yuan), Subtotal: " + (this.Price * this.Quantity).toFixed(2) + " (yuan)\n";
             return outString;
         }
     }
