@@ -14,7 +14,10 @@ module.exports = function main(inputs) {
             if (this.Quantity > 1) {
                 unitString = " " + this.Unit + "s";
             }
-            let outString = "Name: " + this.Name + ", Quantity: " + this.Quantity + unitString + ", Unit price: " + this.Price.toFixed(2) + " (yuan), Subtotal: " + (this.Price * this.Quantity).toFixed(2) + " (yuan)\n";
+            let outString = "Name: " + this.Name + ", "
+            outString += "Quantity: " + this.Quantity + unitString + ", "
+            outString += "Unit price: " + this.Price.toFixed(2) + " (yuan), "
+            outString += "Subtotal: " + (this.Price * this.Quantity).toFixed(2) + " (yuan)\n";
             return outString;
         }
     }
