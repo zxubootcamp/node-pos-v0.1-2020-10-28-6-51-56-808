@@ -14,38 +14,22 @@ module.exports = function main(inputs) {
             if (this.Quantity > 1) {
                 unitString = " " + this.Unit + "s";
             }
-            let outString = "Name: " + this.Name + ", "
-            outString += "Quantity: " + this.Quantity + unitString + ", "
-            outString += "Unit price: " + this.Price.toFixed(2) + " (yuan), "
-            outString += "Subtotal: " + (this.Price * this.Quantity).toFixed(2) + " (yuan)\n";
+            let outString = `Name: ${this.Name}, Quantity: ${this.Quantity + unitString}, Unit price: ${this.Price.toFixed(2)} (yuan), Subtotal: ${(this.Price * this.Quantity).toFixed(2)} (yuan)\n`
             return outString;
         }
     }
 
     function printReceipt(inputs) {
         let receiptMap = new Map();
+        inputs.map(item => receiptMap.has(item.Barcode) ? receiptMap.get(item.Barcode).Quantity += 1 : receiptMap.set(item.Barcode, new Receipt(item.Barcode, item.Name, item.Unit, item.Price)));
 
-        for (let i = 0; i < inputs.length; i++) {
-            let receipt = new Receipt(inputs[i].Barcode, inputs[i].Name, inputs[i].Unit, inputs[i].Price);
-            if (receiptMap.has(receipt.Barcode)) {
-                receiptMap.get(receipt.Barcode).Quantity += 1;
-            }
-            else {
-                receiptMap.set(receipt.Barcode, receipt);
-            }
-        }
-        let outputString = '***<store earning no money>Receipt ***\n';
-        let totalPrice = 0;
-        let receiptArray = Array.from(receiptMap);
-        receiptArray.sort((a, b) => a.Quantity - b.Quantity);
-        for (let i = 0; i < receiptArray.length; i++) {
-            outputString += receiptArray[i][1].ToOutput();
-            totalPrice += receiptArray[i][1].Price * receiptArray[i][1].Quantity;
-        }
-        outputString += '----------------------\n';
-        outputString += 'Total: ' + totalPrice.toFixed(2) + ' (yuan)\n';
-        outputString += '**********************\n';
-        return outputString;
+        let receiptArray = Array.from(receiptMap).sort((a, b) => a.Quantity - b.Quantity);
+
+        return `***<store earning no money>Receipt ***\n` +
+            `${receiptArray.map(item => item = item[1].ToOutput()).reduce((x, y) => x + y)}` +
+            `----------------------\n` +
+            `Total: ${receiptArray.map(item => item[1].Price * item[1].Quantity).reduce((x, y) => x + y).toFixed(2)} (yuan)\n` +
+            `**********************\n`;
     }
 
     return printReceipt(inputs);
